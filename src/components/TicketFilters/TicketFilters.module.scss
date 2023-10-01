@@ -1,0 +1,66 @@
+.filters {
+  display: flex;
+  margin-bottom: 20px;
+  list-style: none;
+  width: fit-content;
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+.filterItem {
+  border-bottom:1px solid #DFE5EC;
+  border-top:1px solid #DFE5EC;
+  border-left: 1px solid #DFE5EC;
+  
+  &:first-child {
+    border-radius: 4px 0 0 4px;
+  }
+
+  &:last-child {
+    border-right: 1px solid #DFE5EC;
+    border-radius: 0 4px 4px 0;
+  }
+
+  &:focus {
+    background-color: #2196F3;
+    border: 1px solid #2196F3;
+
+    & + li {
+      border-left: none;
+    }
+  
+    .filter {
+      background-color: #2196F3;
+      color: #fff;
+    }
+  }
+
+  &:hover {
+    background-color: #2196F3;
+    border: 1px solid #2196F3;
+
+    & + li {
+      border-left: none;
+    }
+  
+    .filter {
+      background-color: #2196F3;
+      color: #fff;
+    }
+  }
+}
+
+.filter {
+  padding: 15px;
+  margin: 1px;
+  height: 50px;
+  width: 168px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #4A4A4A;
+  background-color: #fff;
+  text-transform: uppercase;
+  border: none;
+}
+
