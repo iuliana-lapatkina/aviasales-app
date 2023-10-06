@@ -8,10 +8,14 @@
 }
 
 .filterItem {
-  border-bottom:1px solid #DFE5EC;
-  border-top:1px solid #DFE5EC;
+  border-bottom: 1px solid #DFE5EC;
+  border-top: 1px solid #DFE5EC;
   border-left: 1px solid #DFE5EC;
   
+  &.checked {
+    background-color: #2196F3;
+  }
+
   &:first-child {
     border-radius: 4px 0 0 4px;
   }
@@ -35,7 +39,9 @@
     }
   }
 
-  &:hover {
+  &.checked,
+  &:hover,
+  &:active {
     background-color: #2196F3;
     border: 1px solid #2196F3;
 
@@ -51,6 +57,7 @@
 }
 
 .filter {
+  cursor: pointer;
   padding: 15px;
   margin: 1px;
   height: 50px;

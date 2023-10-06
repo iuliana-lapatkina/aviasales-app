@@ -1,6 +1,6 @@
 .sidebar {
   width: 232px;
-  height: 252px;
+  height: fit-content;
   background-color: #fff;
   box-shadow: 0 1px 4px rgba(74, 74, 74, 0.1);
   border-radius: 6px;
@@ -24,23 +24,37 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  padding-left: 20px;
+  padding-left: 36px;
   height: 40px;
   font-size: 13px;
   font-weight: 400;
+  position: relative;
 
   &:hover {
     background-color: #F1FCFF;
   }
-}
 
-.checkbox > label {
-  padding-left: 30px;
-  position: relative;
+  &:last-child {
+    padding-bottom: 5px;
+  }
+
+  span {
+    cursor: pointer;
+    border-radius: 2px;
+    position: absolute;
+    left: 20px;
+    top: 10px;
+    width:  18px; 
+    height: 18px;
+    border: 1px solid #9ABBCE;
+  }  
 
   input[type="checkbox"] {  
-    position: absolute;
     opacity: 0;
+
+    &:checked ~ span {
+      border: 1px solid #2196F3;
+    }
 
     &:checked ~ span::before {
       content: "";
@@ -52,7 +66,7 @@
       left: 4.5px;
       transform: rotate(135deg);
     }
-
+  
     &:checked ~ span::after {
       content: "";
       position: absolute;
@@ -65,14 +79,4 @@
     }
     
   }
-
-  span {
-    border-radius: 2px;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width:  18px; 
-    height: 18px;
-    border: 1px solid #2196F3;
-  }  
 }

@@ -1,49 +1,39 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { filterToTransfers } from '../../store/ticketSlice';
 
 import styles from './Sidebar.module.scss';
 
 function Sidebar() {
+  const dispatch = useDispatch();
+  const filters = useSelector((state) => state.tickets.filters);
+  const currentFilters = useSelector((state) => state.tickets.currentFilters);
+
+  const checkboxes = Object.keys(filters).map((item) => {
+    const check = currentFilters.includes(item);
+    return (
+      <label className={styles.checkbox} key={item} htmlFor={item}>
+        <input
+          checked={check}
+          id={item}
+          value={item}
+          name="transfer"
+          type="checkbox"
+          onChange={() => {
+            dispatch(filterToTransfers({ item }));
+          }}
+        />
+        <span />
+        {filters[item]}
+      </label>
+    );
+  });
+
   return (
     <div className={styles.sidebar}>
       <h2 className={styles.title}>Количество пересадок</h2>
-      <fieldset className={styles.fieldset}>
-        <div className={styles.checkbox}>
-          <label htmlFor="all">
-            <input type="checkbox" id="all" name="transfer" value="All" />
-            <span />
-            Все
-          </label>
-        </div>
-
-        <div className={styles.checkbox}>
-          <label htmlFor="no-transfer">
-            <input type="checkbox" id="no-transfer" name="transfer" value="no-transfer" />
-            <span />
-            Без пересадок
-          </label>
-        </div>
-
-        <div className={styles.checkbox}>
-          <label htmlFor="one-transfer">
-            <input type="checkbox" id="one-transfer" name="transfer" value="one-transfer" />
-            <span />1 пересадка
-          </label>
-        </div>
-
-        <div className={`${styles.checkbox} ${styles.red}`}>
-          <label htmlFor="two-transfer">
-            <input type="checkbox" id="two-transfer" name="transfer" value="two-transfers" />
-            <span />2 пересадки
-          </label>
-        </div>
-
-        <div className={`${styles.checkbox} ${styles.blue}`}>
-          <label htmlFor="three-transfers">
-            <input type="checkbox" id="three-transfers" name="transfer" value="three-transfers" />
-            <span />3 пересадки
-          </label>
-        </div>
-      </fieldset>
+      <fieldset className={styles.fieldset}>{checkboxes}</fieldset>
     </div>
   );
 }
