@@ -2,23 +2,32 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin: 0 auto 20px;
   list-style: none;
   max-width: 100%;
   background-color: #fff;
   border-radius: 4px;
 
   @media (min-width: 768px) {
+    margin: 0 0 20px;
     text-align: center;
+    max-width: 100%;
   }
 
   @media (min-width: 1280px) {
+    margin: 0 0 20px;
     flex-direction: row;
+    max-width: 100%;
   }
 }
 
 .filterItem {
+  text-align: center;
   border: 1px solid #DFE5EC;
+
+  @media (min-width: 1280px) {
+    text-align: initial;
+  }
   
   &.checked {
     background-color: #2196F3;
@@ -35,9 +44,6 @@
   }
 
   &:nth-child(2) {
-    // border-right: 1px solid #DFE5EC;
-    // border-left: 1px solid #DFE5EC;
-
     @media (min-width: 1280px) {
       border-left: none;
       border-radius: 0;
@@ -46,9 +52,6 @@
 
   &:last-child {
     border-top: none;
-    // border-bottom: 1px solid #DFE5EC;
-    // border-right: 1px solid #DFE5EC;
-    // border-left: 1px solid #DFE5EC;
     border-radius: 0 0 4px 4px;
 
     @media (min-width: 1280px) {
@@ -100,7 +103,7 @@
   padding: 15px;
   margin: 1px;
   height: 50px;
-  width: 165px;
+  width: 164px;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.5px;

@@ -10,7 +10,7 @@
   background-color: #F3F7FA;
 
   @media (min-width: 768px) {
-    padding: 0 20px;
+    padding: 0 100px;
     width: 960px;
   }
 
@@ -46,5 +46,9 @@
 }
 
 .tickets {
-  max-width: 502px;
+  max-width: initial;
+
+  @media (min-width: 768px) {
+    max-width: 502px;
+  }
 }
