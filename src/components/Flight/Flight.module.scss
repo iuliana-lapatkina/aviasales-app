@@ -9,20 +9,40 @@
   table-layout: fixed;
 
   thead {
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 600;
     line-height: 18px;
     letter-spacing: 0.5;
     text-transform: uppercase;
     text-align: left;
     color: #A0B0B9;
+
+    @media (min-width: 768px) {
+      font-size: 12px;
+    }
+  
+    @media (min-width: 1280px) {
+      font-size: 12px;
+    }
+
+    tr th:nth-child(2) {
+      width: 28%;
+    }
   }
 
   tbody {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     line-height: 21px;
     letter-spacing: 0;
     color: #4A4A4A;
+
+    @media (min-width: 768px) {
+      font-size: 14px;
+    }
+  
+    @media (min-width: 1280px) {
+      font-size: 14px;
+    }
   }
 }

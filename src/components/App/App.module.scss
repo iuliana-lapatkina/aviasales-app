@@ -5,12 +5,17 @@
 
 .container {
   margin: 0 auto;
-  padding: 0 103px;
+  padding: 0 15px;
   max-width: 960px;
   background-color: #F3F7FA;
 
   @media (min-width: 768px) {
+    padding: 0 20px;
     width: 960px;
+  }
+
+  @media (min-width: 1280px) {
+    padding: 0 103px;
   }
 }
 
@@ -21,6 +26,7 @@
 
   @media (min-width: 768px) {
     flex-direction: row;
+    justify-content: center;
   }
 }
 
