@@ -11,11 +11,10 @@ function Sidebar() {
   const currentFilters = useSelector((state) => state.tickets.currentFilters);
 
   const checkboxes = Object.keys(filters).map((item) => {
-    const check = currentFilters.includes(item);
     return (
       <label className={styles.checkbox} key={item} htmlFor={item}>
         <input
-          checked={check}
+          checked={currentFilters.includes(item)}
           id={item}
           value={item}
           name="transfer"

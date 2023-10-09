@@ -1,8 +1,41 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+export const getSearchId = createAsyncThunk('tickets/getSearchId', async (_, { rejectWithValue }) => {
+  try {
+    const res = await fetch('https://aviasales-test-api.kata.academy/search');
+
+    if (!res.ok) {
+      throw new Error(`Could not fetch search id, ${res.status}`);
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
+});
+
+export const getTickets = createAsyncThunk('tickets/fetchTickets', async (id, { rejectWithValue }) => {
+  try {
+    const res = await fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${id}`);
+
+    if (!res.ok) {
+      throw new Error(`${res.status}`);
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    return rejectWithValue(err.message);
+  }
+});
 
 const ticketSlice = createSlice({
   name: 'tickets',
   initialState: {
+    searchId: null,
+    ticketsList: [],
+    stop: null,
     filters: {
       all: 'Все',
       'no-transfer': 'Без пересадок',
@@ -12,47 +45,92 @@ const ticketSlice = createSlice({
     },
     currentFilters: [],
     sort: 'low-cost',
+    status: null,
+    error: true,
   },
 
   reducers: {
-    filterToTransfers(state, action) {
-      const filter = action.payload.item;
-      if (filter === 'all' && !state.currentFilters.includes(filter)) {
+    filterToTransfers(state, { payload }) {
+      const filterList = state.currentFilters;
+      const filter = payload.item;
+
+      const pushFilter = (el) => {
+        filterList.push(el);
+      };
+
+      const removeFilter = (idx) => {
+        filterList.splice(idx, 1);
+      };
+
+      const findIndex = (item) => {
+        return filterList.findIndex((el) => el === item);
+      };
+
+      if (filter === 'all' && !filterList.includes(filter)) {
         state.currentFilters = Object.keys(state.filters);
+        console.log(state.ticketsList);
+        console.log(state.stop);
         return;
       }
-      if (filter === 'all' && state.currentFilters.includes(filter)) {
+      if (filter === 'all' && filterList.includes(filter)) {
         state.currentFilters = [];
         return;
       }
-      if (
-        filter !== 'all' &&
-        !state.currentFilters.includes(filter) &&
-        !state.currentFilters.includes('all') &&
-        state.currentFilters.length === 3
-      ) {
-        state.currentFilters.push(filter);
-        state.currentFilters.push('all');
+      if (filter !== 'all' && !filterList.includes(filter) && !filterList.includes('all') && filterList.length === 3) {
+        pushFilter(filter);
+        pushFilter('all');
         return;
       }
-      if (filter !== 'all' && state.currentFilters.includes(filter) && state.currentFilters.includes('all')) {
-        const index = state.currentFilters.findIndex((el) => el === filter);
-        state.currentFilters.splice(index, 1);
-        const indexAll = state.currentFilters.findIndex((el) => el === 'all');
-        state.currentFilters.splice(indexAll, 1);
+      if (filter !== 'all' && filterList.includes(filter) && filterList.includes('all')) {
+        removeFilter(findIndex(filter));
+        removeFilter(findIndex('all'));
         return;
       }
       if (state.currentFilters.includes(filter)) {
-        const index = state.currentFilters.findIndex((el) => el === filter);
-        state.currentFilters.splice(index, 1);
+        removeFilter(findIndex(filter));
       } else {
-        state.currentFilters.push(filter);
+        pushFilter(filter);
       }
     },
 
     sortTickets(state, action) {
       state.sort = action.payload.id;
     },
+
+    setSearchId(state, action) {
+      state.searchId = action.payload;
+    },
+  },
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(getSearchId.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(getSearchId.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = false;
+        state.searchId = action.payload.searchId;
+      })
+      .addCase(getSearchId.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      })
+      .addCase(getTickets.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(getTickets.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = false;
+        state.ticketsList = action.payload.tickets;
+        state.stop = action.payload.stop;
+      })
+      .addCase(getTickets.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      });
   },
 
   devTools: true,

@@ -3,3 +3,26 @@
   display: flex;
   justify-content: space-between;
 }
+
+.flight-table {
+  width: 100%;
+  table-layout: fixed;
+
+  thead {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0.5;
+    text-transform: uppercase;
+    text-align: left;
+    color: #A0B0B9;
+  }
+
+  tbody {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 21px;
+    letter-spacing: 0;
+    color: #4A4A4A;
+  }
+}
