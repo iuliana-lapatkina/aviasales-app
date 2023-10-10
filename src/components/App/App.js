@@ -7,7 +7,7 @@ import { getSearchId, getTickets } from '../../services/ticketService';
 import { sortTickets, filterTickets } from '../../utils/sortFunctions';
 import Header from '../Header';
 import Sidebar from '../Sidebar';
-import TicketFilters from '../TicketFilters';
+import TicketSorting from '../TicketSorting';
 import TicketList from '../TicketList';
 
 import styles from './App.module.scss';
@@ -66,7 +66,7 @@ function App() {
         <div className={styles.main}>
           <Sidebar />
           <div className={styles.tickets}>
-            <TicketFilters />
+            <TicketSorting />
             {spin}
             <TicketList ticketsList={sortTicketsList} count={count} />
             {infoMessage}

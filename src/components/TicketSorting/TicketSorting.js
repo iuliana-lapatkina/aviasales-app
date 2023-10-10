@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { sortTickets } from '../../store/ticketSlice';
 
-import styles from './TicketFilters.module.scss';
+import styles from './TicketSorting.module.scss';
 
-function TicketFilters() {
+function TicketSorting() {
   const dispatch = useDispatch();
 
   const sortItem = useSelector((state) => state.tickets.sort);
@@ -25,4 +25,4 @@ function TicketFilters() {
   return <ul className={styles.filters}>{sortList}</ul>;
 }
 
-export default TicketFilters;
+export default TicketSorting;
