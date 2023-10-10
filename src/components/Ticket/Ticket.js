@@ -5,12 +5,11 @@ import Flight from '../Flight';
 import styles from './Ticket.module.scss';
 
 function Ticket(props) {
-  console.log(props);
   const {
     ticketInfo: { carrier, price, segments },
   } = props;
 
-  const ticketPrice = `${String(price).slice(0, -3)} ${String(price).substr(-3, 3)}`;
+  const ticketPrice = `${String(price).slice(0, -3)} ${String(price).substring(-3, 3)}`;
 
   return (
     <div className={styles.ticket}>

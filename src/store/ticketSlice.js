@@ -1,34 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-export const getSearchId = createAsyncThunk('tickets/getSearchId', async (_, { rejectWithValue }) => {
-  try {
-    const res = await fetch('https://aviasales-test-api.kata.academy/search');
-
-    if (!res.ok) {
-      throw new Error(`Could not fetch search id, ${res.status}`);
-    }
-
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    return rejectWithValue(error.message);
-  }
-});
-
-export const getTickets = createAsyncThunk('tickets/fetchTickets', async (id, { rejectWithValue }) => {
-  try {
-    const res = await fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${id}`);
-
-    if (!res.ok) {
-      throw new Error(`${res.status}`);
-    }
-
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    return rejectWithValue(err.message);
-  }
-});
+import { getSearchId, getTickets } from '../services/ticketService';
 
 const ticketSlice = createSlice({
   name: 'tickets',
@@ -45,8 +17,8 @@ const ticketSlice = createSlice({
     },
     currentFilters: [],
     sort: 'low-cost',
-    status: null,
-    error: true,
+    error: false,
+    loading: false,
   },
 
   reducers: {
@@ -68,8 +40,6 @@ const ticketSlice = createSlice({
 
       if (filter === 'all' && !filterList.includes(filter)) {
         state.currentFilters = Object.keys(state.filters);
-        console.log(state.ticketsList);
-        console.log(state.stop);
         return;
       }
       if (filter === 'all' && filterList.includes(filter)) {
@@ -93,12 +63,12 @@ const ticketSlice = createSlice({
       }
     },
 
-    sortTickets(state, action) {
-      state.sort = action.payload.id;
+    sortTickets(state, { payload }) {
+      state.sort = payload.id;
     },
 
-    setSearchId(state, action) {
-      state.searchId = action.payload;
+    setSearchId(state, { payload }) {
+      state.searchId = payload;
     },
   },
 
@@ -108,10 +78,10 @@ const ticketSlice = createSlice({
         state.loading = true;
         state.error = false;
       })
-      .addCase(getSearchId.fulfilled, (state, action) => {
+      .addCase(getSearchId.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = false;
-        state.searchId = action.payload.searchId;
+        state.searchId = payload.searchId;
       })
       .addCase(getSearchId.rejected, (state) => {
         state.loading = false;
@@ -121,11 +91,21 @@ const ticketSlice = createSlice({
         state.loading = true;
         state.error = false;
       })
-      .addCase(getTickets.fulfilled, (state, action) => {
-        state.loading = false;
+      .addCase(getTickets.fulfilled, (state, { payload }) => {
+        state.loading = true;
         state.error = false;
-        state.ticketsList = action.payload.tickets;
-        state.stop = action.payload.stop;
+        const newData = payload.tickets;
+        if (newData) {
+          state.ticketsList = state.ticketsList.concat(newData);
+        }
+        state.stop = payload.stop;
+        if (state.searchId && !payload.stop) {
+          getTickets(state.searchId);
+        }
+        if (payload.stop) {
+          state.loading = false;
+          state.error = false;
+        }
       })
       .addCase(getTickets.rejected, (state) => {
         state.loading = false;
